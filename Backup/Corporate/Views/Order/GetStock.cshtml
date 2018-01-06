@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "GetStock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Corporate.ViewModel;
+@model IEnumerable<ShowInventoryVM>
+
+<div class="col-md-12 row">
+<header id="headerz1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="BGHeader"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Present Stock</h2>
+            </div>
+        </div>
+    </div>
+
+</header>
+    </div>
+@*start of grid*@
+<div class="col-md-12">
+<div class="panel panel-default">
+    <div class="panel-heading text-center">
+        <h3 class="panel-title"><b><u>Inventory</u></b></h3>
+        @*<a class="pull-right" data-toggle="modal" data-target="#createOrder" style="cursor: pointer"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i></a>*@
+    </div>
+    <div class="panel-body ">
+
+        <table class="table table-responsive  table-hover">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Product</th>
+                      <th>Description</th>
+                    <th>Rate</th>
+                    <th>Quantity</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+               @foreach (ShowInventoryVM pur in @Model)
+               {
+                   int i =+  pur.Quantity;
+              
+                    <tr>
+                        @* <td>@Html.ActionLink(@pur.OrderNo, "ViewOrderDetails", new { @OrderID = @pur.OrderID, @Mini = @pur.OrderNo, @Macro = @pur.Amount, @Date = pur.OrderDate })</td>
+                        <td>@pur.OrderDate</td>*@
+                        <td>@pur.ProductMasterName</td>
+                        <td>@pur.ProductName</td>
+                        <td>@pur.ItemDescription</td>
+                        <td>@pur.Rate</td>
+                        <td>@pur.Quantity</td>
+
+                        @*<td><a  data-toggle="modal" data-target="#remove" style="cursor:pointer">@Html.ActionLink(".", "Remove", new { @Selected = @pur.PurchaserID }, new {@class="glyphicon glyphicon-trash" }) </a></td>
+                         <td>@Html.ActionLink(".", "Purchase_Invoice", new { @OrderNo = @pur.OrderNo }, new { target = "_blank", @class = "glyphicon glyphicon-print" })</td>
+                        *@
+
+                    </tr>
+                  
+                }
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+   </div> 
+@*end of grid*@

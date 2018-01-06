@@ -1,0 +1,13 @@
+﻿  span.error { color:red; display:block; font-size:90%; visibility:hidden; font-variant:small-caps; 
+                 
+    }
+    tr.error {
+        background-color:rgba(255,0,0,.35);
+    }
+.wasit_panelTitle {background-color:aqua;
+}
+.field-validation-error{ color:red; display:block; font-size:90%; visibility:hidden; font-variant:small-caps; 
+                 
+    }
+
+  

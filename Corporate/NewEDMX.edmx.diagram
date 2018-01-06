@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5f0ca7e453e74641bb61f185f406d820" Name="Diagram1">
+        <EntityTypeShape EntityType="SandSModel.Customer" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.Ledger" Width="1.5" PointX="7.5" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.OrderDetail" Width="1.5" PointX="12.75" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.OrderMaster" Width="1.5" PointX="10.5" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.PaymentDetail" Width="1.5" PointX="10.5" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.PaymentMode" Width="1.5" PointX="5.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.Product" Width="1.5" PointX="7.5" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.ProductMaster" Width="1.5" PointX="5.25" PointY="22" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.Purchaser" Width="1.5" PointX="5.25" PointY="25.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.User" Width="1.5" PointX="3" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SandSModel.UserRole" Width="1.5" PointX="0.75" PointY="16.25" IsExpanded="true" />
+        <AssociationConnector Association="SandSModel.FK__Customer__Create__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Customer__Modifi__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Ledger__Customer__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__OrderMast__Custo__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__PaymentDe__Custo__0A9D95DB" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Ledger__OrderID__66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Ledger__PaymentD__1EA48E88" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Ledger__Purchase__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__OrderDeta__Order__151B244E" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__OrderMast__Creat__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__OrderMast__Modif__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__OrderMast__Payme__1CBC4616" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__OrderMast__Purch__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__PaymentDe__Creat__0D7A0286" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__PaymentDe__Payme__0C85DE4D" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__PaymentDe__Purch__0B91BA14" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__PaymentMo__Creat__6E01572D" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__PaymentMo__Modif__6EF57B66" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Product__Created__32E0915F" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Product__Modifie__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Product__Product__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__ProductMa__Creat__1A14E395" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__ProductMa__Modif__1B0907CE" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Purchaser__Creat__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__Purchaser__Modif__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="SandSModel.FK__User__UserRoleId__1273C1CD" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

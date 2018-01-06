@@ -1,0 +1,1786 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SandSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="PAN" Type="nvarchar" MaxLength="10" />
+          <Property Name="ContactNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="EmailID" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="30" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="date" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Ledger">
+          <Key>
+            <PropertyRef Name="LedgerID" />
+          </Key>
+          <Property Name="LedgerID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" />
+          <Property Name="Credit" Type="money" />
+          <Property Name="Debit" Type="money" />
+          <Property Name="TransDate" Type="date" Nullable="false" />
+          <Property Name="PurchaserID" Type="bigint" />
+          <Property Name="CustomerID" Type="bigint" />
+          <Property Name="PaymentDetailID" Type="bigint" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderDetailID" />
+          </Key>
+          <Property Name="OrderDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="Rate" Type="numeric" Precision="12" Scale="2" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="ItemDescription" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="OrderMaster">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderNo" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
+          <Property Name="CustomerID" Type="bigint" />
+          <Property Name="PurchaserID" Type="bigint" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="date" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="PaymentModeID" Type="int" />
+        </EntityType>
+        <EntityType Name="PaymentDetails">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaserID" Type="bigint" />
+          <Property Name="CustomerID" Type="bigint" />
+          <Property Name="PaymentModeID" Type="int" Nullable="false" />
+          <Property Name="PaymentDate" Type="datetime" Nullable="false" />
+          <Property Name="PaymentAmount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="PaymentMode">
+          <Key>
+            <PropertyRef Name="PaymentModeID" />
+          </Key>
+          <Property Name="PaymentModeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentType" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="date" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductMasterID" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="date" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="ProductMaster">
+          <Key>
+            <PropertyRef Name="ProductMasterID" />
+          </Key>
+          <Property Name="ProductMasterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductMasterName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="date" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Purchaser">
+          <Key>
+            <PropertyRef Name="PurchaserID" />
+          </Key>
+          <Property Name="PurchaserID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaserNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="PAN" Type="nvarchar" MaxLength="10" />
+          <Property Name="ContactNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="EmailID" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="30" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="date" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserRoleId" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="date" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="date" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <Association Name="FK__Customer__Create__276EDEB3">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer__Modifi__286302EC">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ledger__Customer__6477ECF3">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Ledger" Type="Self.Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Ledger">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ledger__OrderID__66603565">
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="0..1" />
+          <End Role="Ledger" Type="Self.Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderMaster">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="Ledger">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ledger__PaymentD__1EA48E88">
+          <End Role="PaymentDetails" Type="Self.PaymentDetails" Multiplicity="0..1" />
+          <End Role="Ledger" Type="Self.Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentDetails">
+              <PropertyRef Name="PaymentID" />
+            </Principal>
+            <Dependent Role="Ledger">
+              <PropertyRef Name="PaymentDetailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ledger__Purchase__656C112C">
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="0..1" />
+          <End Role="Ledger" Type="Self.Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purchaser">
+              <PropertyRef Name="PurchaserID" />
+            </Principal>
+            <Dependent Role="Ledger">
+              <PropertyRef Name="PurchaserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Order__151B244E">
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderMaster">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Creat__5EBF139D">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Custo__5CD6CB2B">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Modif__5FB337D6">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Payme__1CBC4616">
+          <End Role="PaymentMode" Type="Self.PaymentMode" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMode">
+              <PropertyRef Name="PaymentModeID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="PaymentModeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Purch__5DCAEF64">
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purchaser">
+              <PropertyRef Name="PurchaserID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="PurchaserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentDe__Creat__0D7A0286">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PaymentDetails" Type="Self.PaymentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PaymentDetails">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentDe__Custo__0A9D95DB">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="PaymentDetails" Type="Self.PaymentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="PaymentDetails">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentDe__Payme__0C85DE4D">
+          <End Role="PaymentMode" Type="Self.PaymentMode" Multiplicity="1" />
+          <End Role="PaymentDetails" Type="Self.PaymentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMode">
+              <PropertyRef Name="PaymentModeID" />
+            </Principal>
+            <Dependent Role="PaymentDetails">
+              <PropertyRef Name="PaymentModeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentDe__Purch__0B91BA14">
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="0..1" />
+          <End Role="PaymentDetails" Type="Self.PaymentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purchaser">
+              <PropertyRef Name="PurchaserID" />
+            </Principal>
+            <Dependent Role="PaymentDetails">
+              <PropertyRef Name="PurchaserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentMo__Creat__6E01572D">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PaymentMode" Type="Self.PaymentMode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PaymentMode">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentMo__Modif__6EF57B66">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PaymentMode" Type="Self.PaymentMode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PaymentMode">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Created__32E0915F">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Modifie__33D4B598">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__31EC6D26">
+          <End Role="ProductMaster" Type="Self.ProductMaster" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductMaster">
+              <PropertyRef Name="ProductMasterID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductMasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductMa__Creat__1A14E395">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ProductMaster" Type="Self.ProductMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ProductMaster">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductMa__Modif__1B0907CE">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ProductMaster" Type="Self.ProductMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ProductMaster">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Purchaser__Creat__3B75D760">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Purchaser">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Purchaser__Modif__3C69FB99">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Purchaser">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__UserRoleId__1273C1CD">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fnNumberToWords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar(max)">
+          <Parameter Name="Number" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Generate_PaymentReceipt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PaymentID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Generate_POInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderNo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GenerateOrderNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllPayments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Purchaser" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetAllPO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Purchaser" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetAllPurchaser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllPurchaser1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetLedger" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetLedgerBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PurChaserID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetLedgerBalance2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PurChaserID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetLedgerBalanceByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PurChaserID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="PaymentStatementByDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Purchaser" Type="varchar" Mode="In" />
+          <Parameter Name="StartDate" Type="varchar" Mode="In" />
+          <Parameter Name="EndDate" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Usp_GenerateOrderNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Usp_GetYearwisepaymentdetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="UspDashBoard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UspDashBoardSevenDaysOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UspShowInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FromDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="ToDate" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="SandSModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ledger" EntityType="Self.Ledger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderMaster" EntityType="Self.OrderMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentMode" EntityType="Self.PaymentMode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductMaster" EntityType="Self.ProductMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Purchaser" EntityType="Self.Purchaser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Customer__Create__276EDEB3" Association="Self.FK__Customer__Create__276EDEB3">
+            <End Role="User" EntitySet="User" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__Modifi__286302EC" Association="Self.FK__Customer__Modifi__286302EC">
+            <End Role="User" EntitySet="User" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ledger__Customer__6477ECF3" Association="Self.FK__Ledger__Customer__6477ECF3">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Ledger" EntitySet="Ledger" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ledger__OrderID__66603565" Association="Self.FK__Ledger__OrderID__66603565">
+            <End Role="OrderMaster" EntitySet="OrderMaster" />
+            <End Role="Ledger" EntitySet="Ledger" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ledger__PaymentD__1EA48E88" Association="Self.FK__Ledger__PaymentD__1EA48E88">
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+            <End Role="Ledger" EntitySet="Ledger" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ledger__Purchase__656C112C" Association="Self.FK__Ledger__Purchase__656C112C">
+            <End Role="Purchaser" EntitySet="Purchaser" />
+            <End Role="Ledger" EntitySet="Ledger" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Order__151B244E" Association="Self.FK__OrderDeta__Order__151B244E">
+            <End Role="OrderMaster" EntitySet="OrderMaster" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Creat__5EBF139D" Association="Self.FK__OrderMast__Creat__5EBF139D">
+            <End Role="User" EntitySet="User" />
+            <End Role="OrderMaster" EntitySet="OrderMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Custo__5CD6CB2B" Association="Self.FK__OrderMast__Custo__5CD6CB2B">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="OrderMaster" EntitySet="OrderMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Modif__5FB337D6" Association="Self.FK__OrderMast__Modif__5FB337D6">
+            <End Role="User" EntitySet="User" />
+            <End Role="OrderMaster" EntitySet="OrderMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Payme__1CBC4616" Association="Self.FK__OrderMast__Payme__1CBC4616">
+            <End Role="PaymentMode" EntitySet="PaymentMode" />
+            <End Role="OrderMaster" EntitySet="OrderMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Purch__5DCAEF64" Association="Self.FK__OrderMast__Purch__5DCAEF64">
+            <End Role="Purchaser" EntitySet="Purchaser" />
+            <End Role="OrderMaster" EntitySet="OrderMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentDe__Creat__0D7A0286" Association="Self.FK__PaymentDe__Creat__0D7A0286">
+            <End Role="User" EntitySet="User" />
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentDe__Custo__0A9D95DB" Association="Self.FK__PaymentDe__Custo__0A9D95DB">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentDe__Payme__0C85DE4D" Association="Self.FK__PaymentDe__Payme__0C85DE4D">
+            <End Role="PaymentMode" EntitySet="PaymentMode" />
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentDe__Purch__0B91BA14" Association="Self.FK__PaymentDe__Purch__0B91BA14">
+            <End Role="Purchaser" EntitySet="Purchaser" />
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentMo__Creat__6E01572D" Association="Self.FK__PaymentMo__Creat__6E01572D">
+            <End Role="User" EntitySet="User" />
+            <End Role="PaymentMode" EntitySet="PaymentMode" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentMo__Modif__6EF57B66" Association="Self.FK__PaymentMo__Modif__6EF57B66">
+            <End Role="User" EntitySet="User" />
+            <End Role="PaymentMode" EntitySet="PaymentMode" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Created__32E0915F" Association="Self.FK__Product__Created__32E0915F">
+            <End Role="User" EntitySet="User" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Modifie__33D4B598" Association="Self.FK__Product__Modifie__33D4B598">
+            <End Role="User" EntitySet="User" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__31EC6D26" Association="Self.FK__Product__Product__31EC6D26">
+            <End Role="ProductMaster" EntitySet="ProductMaster" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductMa__Creat__1A14E395" Association="Self.FK__ProductMa__Creat__1A14E395">
+            <End Role="User" EntitySet="User" />
+            <End Role="ProductMaster" EntitySet="ProductMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductMa__Modif__1B0907CE" Association="Self.FK__ProductMa__Modif__1B0907CE">
+            <End Role="User" EntitySet="User" />
+            <End Role="ProductMaster" EntitySet="ProductMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchaser__Creat__3B75D760" Association="Self.FK__Purchaser__Creat__3B75D760">
+            <End Role="User" EntitySet="User" />
+            <End Role="Purchaser" EntitySet="Purchaser" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchaser__Modif__3C69FB99" Association="Self.FK__Purchaser__Modif__3C69FB99">
+            <End Role="User" EntitySet="User" />
+            <End Role="Purchaser" EntitySet="Purchaser" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__UserRoleId__1273C1CD" Association="Self.FK__User__UserRoleId__1273C1CD">
+            <End Role="UserRole" EntitySet="UserRole" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SandSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="PAN" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Customer__Create__276EDEB3" FromRole="Customer" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__Customer__Modifi__286302EC" FromRole="Customer" ToRole="User" />
+          <NavigationProperty Name="Ledgers" Relationship="Self.FK__Ledger__Customer__6477ECF3" FromRole="Customer" ToRole="Ledger" />
+          <NavigationProperty Name="OrderMasters" Relationship="Self.FK__OrderMast__Custo__5CD6CB2B" FromRole="Customer" ToRole="OrderMaster" />
+          <NavigationProperty Name="PaymentDetails" Relationship="Self.FK__PaymentDe__Custo__0A9D95DB" FromRole="Customer" ToRole="PaymentDetails" />
+        </EntityType>
+        <EntityType Name="Ledger">
+          <Key>
+            <PropertyRef Name="LedgerID" />
+          </Key>
+          <Property Name="LedgerID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" />
+          <Property Name="Credit" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Debit" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PurchaserID" Type="Int64" />
+          <Property Name="CustomerID" Type="Int64" />
+          <Property Name="PaymentDetailID" Type="Int64" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Ledger__Customer__6477ECF3" FromRole="Ledger" ToRole="Customer" />
+          <NavigationProperty Name="OrderMaster" Relationship="Self.FK__Ledger__OrderID__66603565" FromRole="Ledger" ToRole="OrderMaster" />
+          <NavigationProperty Name="PaymentDetail" Relationship="Self.FK__Ledger__PaymentD__1EA48E88" FromRole="Ledger" ToRole="PaymentDetails" />
+          <NavigationProperty Name="Purchaser" Relationship="Self.FK__Ledger__Purchase__656C112C" FromRole="Ledger" ToRole="Purchaser" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderDetailID" />
+          </Key>
+          <Property Name="OrderDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="Rate" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="ItemDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OrderMaster" Relationship="Self.FK__OrderDeta__Order__151B244E" FromRole="OrderDetail" ToRole="OrderMaster" />
+        </EntityType>
+        <EntityType Name="OrderMaster">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderNo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerID" Type="Int64" />
+          <Property Name="PurchaserID" Type="Int64" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="PaymentModeID" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__OrderMast__Custo__5CD6CB2B" FromRole="OrderMaster" ToRole="Customer" />
+          <NavigationProperty Name="Ledgers" Relationship="Self.FK__Ledger__OrderID__66603565" FromRole="OrderMaster" ToRole="Ledger" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Order__151B244E" FromRole="OrderMaster" ToRole="OrderDetail" />
+          <NavigationProperty Name="User" Relationship="Self.FK__OrderMast__Creat__5EBF139D" FromRole="OrderMaster" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__OrderMast__Modif__5FB337D6" FromRole="OrderMaster" ToRole="User" />
+          <NavigationProperty Name="PaymentMode" Relationship="Self.FK__OrderMast__Payme__1CBC4616" FromRole="OrderMaster" ToRole="PaymentMode" />
+          <NavigationProperty Name="Purchaser" Relationship="Self.FK__OrderMast__Purch__5DCAEF64" FromRole="OrderMaster" ToRole="Purchaser" />
+        </EntityType>
+        <EntityType Name="PaymentDetail">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaserID" Type="Int64" />
+          <Property Name="CustomerID" Type="Int64" />
+          <Property Name="PaymentModeID" Type="Int32" Nullable="false" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PaymentAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Reference" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__PaymentDe__Custo__0A9D95DB" FromRole="PaymentDetails" ToRole="Customer" />
+          <NavigationProperty Name="Ledgers" Relationship="Self.FK__Ledger__PaymentD__1EA48E88" FromRole="PaymentDetails" ToRole="Ledger" />
+          <NavigationProperty Name="User" Relationship="Self.FK__PaymentDe__Creat__0D7A0286" FromRole="PaymentDetails" ToRole="User" />
+          <NavigationProperty Name="PaymentMode" Relationship="Self.FK__PaymentDe__Payme__0C85DE4D" FromRole="PaymentDetails" ToRole="PaymentMode" />
+          <NavigationProperty Name="Purchaser" Relationship="Self.FK__PaymentDe__Purch__0B91BA14" FromRole="PaymentDetails" ToRole="Purchaser" />
+        </EntityType>
+        <EntityType Name="PaymentMode">
+          <Key>
+            <PropertyRef Name="PaymentModeID" />
+          </Key>
+          <Property Name="PaymentModeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="OrderMasters" Relationship="Self.FK__OrderMast__Payme__1CBC4616" FromRole="PaymentMode" ToRole="OrderMaster" />
+          <NavigationProperty Name="PaymentDetails" Relationship="Self.FK__PaymentDe__Payme__0C85DE4D" FromRole="PaymentMode" ToRole="PaymentDetails" />
+          <NavigationProperty Name="User" Relationship="Self.FK__PaymentMo__Creat__6E01572D" FromRole="PaymentMode" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__PaymentMo__Modif__6EF57B66" FromRole="PaymentMode" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductMasterID" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Product__Created__32E0915F" FromRole="Product" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__Product__Modifie__33D4B598" FromRole="Product" ToRole="User" />
+          <NavigationProperty Name="ProductMaster" Relationship="Self.FK__Product__Product__31EC6D26" FromRole="Product" ToRole="ProductMaster" />
+        </EntityType>
+        <EntityType Name="ProductMaster">
+          <Key>
+            <PropertyRef Name="ProductMasterID" />
+          </Key>
+          <Property Name="ProductMasterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductMasterName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__31EC6D26" FromRole="ProductMaster" ToRole="Product" />
+          <NavigationProperty Name="User" Relationship="Self.FK__ProductMa__Creat__1A14E395" FromRole="ProductMaster" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__ProductMa__Modif__1B0907CE" FromRole="ProductMaster" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Purchaser">
+          <Key>
+            <PropertyRef Name="PurchaserID" />
+          </Key>
+          <Property Name="PurchaserID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaserNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="PAN" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="Ledgers" Relationship="Self.FK__Ledger__Purchase__656C112C" FromRole="Purchaser" ToRole="Ledger" />
+          <NavigationProperty Name="OrderMasters" Relationship="Self.FK__OrderMast__Purch__5DCAEF64" FromRole="Purchaser" ToRole="OrderMaster" />
+          <NavigationProperty Name="PaymentDetails" Relationship="Self.FK__PaymentDe__Purch__0B91BA14" FromRole="Purchaser" ToRole="PaymentDetails" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Purchaser__Creat__3B75D760" FromRole="Purchaser" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__Purchaser__Modif__3C69FB99" FromRole="Purchaser" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserRoleId" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK__Customer__Create__276EDEB3" FromRole="User" ToRole="Customer" />
+          <NavigationProperty Name="Customers1" Relationship="Self.FK__Customer__Modifi__286302EC" FromRole="User" ToRole="Customer" />
+          <NavigationProperty Name="OrderMasters" Relationship="Self.FK__OrderMast__Creat__5EBF139D" FromRole="User" ToRole="OrderMaster" />
+          <NavigationProperty Name="OrderMasters1" Relationship="Self.FK__OrderMast__Modif__5FB337D6" FromRole="User" ToRole="OrderMaster" />
+          <NavigationProperty Name="PaymentDetails" Relationship="Self.FK__PaymentDe__Creat__0D7A0286" FromRole="User" ToRole="PaymentDetails" />
+          <NavigationProperty Name="PaymentModes" Relationship="Self.FK__PaymentMo__Creat__6E01572D" FromRole="User" ToRole="PaymentMode" />
+          <NavigationProperty Name="PaymentModes1" Relationship="Self.FK__PaymentMo__Modif__6EF57B66" FromRole="User" ToRole="PaymentMode" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Created__32E0915F" FromRole="User" ToRole="Product" />
+          <NavigationProperty Name="Products1" Relationship="Self.FK__Product__Modifie__33D4B598" FromRole="User" ToRole="Product" />
+          <NavigationProperty Name="ProductMasters" Relationship="Self.FK__ProductMa__Creat__1A14E395" FromRole="User" ToRole="ProductMaster" />
+          <NavigationProperty Name="ProductMasters1" Relationship="Self.FK__ProductMa__Modif__1B0907CE" FromRole="User" ToRole="ProductMaster" />
+          <NavigationProperty Name="Purchasers" Relationship="Self.FK__Purchaser__Creat__3B75D760" FromRole="User" ToRole="Purchaser" />
+          <NavigationProperty Name="Purchasers1" Relationship="Self.FK__Purchaser__Modif__3C69FB99" FromRole="User" ToRole="Purchaser" />
+          <NavigationProperty Name="UserRole" Relationship="Self.FK__User__UserRoleId__1273C1CD" FromRole="User" ToRole="UserRole" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__User__UserRoleId__1273C1CD" FromRole="UserRole" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__Customer__Create__276EDEB3">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer__Modifi__286302EC">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ledger__Customer__6477ECF3">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Ledger" Type="Self.Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Ledger">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Custo__5CD6CB2B">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentDe__Custo__0A9D95DB">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="PaymentDetails" Type="Self.PaymentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="PaymentDetails">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ledger__OrderID__66603565">
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="0..1" />
+          <End Role="Ledger" Type="Self.Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderMaster">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="Ledger">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ledger__PaymentD__1EA48E88">
+          <End Role="PaymentDetails" Type="Self.PaymentDetail" Multiplicity="0..1" />
+          <End Role="Ledger" Type="Self.Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentDetails">
+              <PropertyRef Name="PaymentID" />
+            </Principal>
+            <Dependent Role="Ledger">
+              <PropertyRef Name="PaymentDetailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ledger__Purchase__656C112C">
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="0..1" />
+          <End Role="Ledger" Type="Self.Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purchaser">
+              <PropertyRef Name="PurchaserID" />
+            </Principal>
+            <Dependent Role="Ledger">
+              <PropertyRef Name="PurchaserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Order__151B244E">
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderMaster">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Creat__5EBF139D">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Modif__5FB337D6">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Payme__1CBC4616">
+          <End Role="PaymentMode" Type="Self.PaymentMode" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMode">
+              <PropertyRef Name="PaymentModeID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="PaymentModeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderMast__Purch__5DCAEF64">
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="0..1" />
+          <End Role="OrderMaster" Type="Self.OrderMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purchaser">
+              <PropertyRef Name="PurchaserID" />
+            </Principal>
+            <Dependent Role="OrderMaster">
+              <PropertyRef Name="PurchaserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentDe__Creat__0D7A0286">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PaymentDetails" Type="Self.PaymentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PaymentDetails">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentDe__Payme__0C85DE4D">
+          <End Role="PaymentMode" Type="Self.PaymentMode" Multiplicity="1" />
+          <End Role="PaymentDetails" Type="Self.PaymentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMode">
+              <PropertyRef Name="PaymentModeID" />
+            </Principal>
+            <Dependent Role="PaymentDetails">
+              <PropertyRef Name="PaymentModeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentDe__Purch__0B91BA14">
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="0..1" />
+          <End Role="PaymentDetails" Type="Self.PaymentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purchaser">
+              <PropertyRef Name="PurchaserID" />
+            </Principal>
+            <Dependent Role="PaymentDetails">
+              <PropertyRef Name="PurchaserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentMo__Creat__6E01572D">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PaymentMode" Type="Self.PaymentMode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PaymentMode">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PaymentMo__Modif__6EF57B66">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PaymentMode" Type="Self.PaymentMode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PaymentMode">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Created__32E0915F">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Modifie__33D4B598">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__31EC6D26">
+          <End Role="ProductMaster" Type="Self.ProductMaster" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductMaster">
+              <PropertyRef Name="ProductMasterID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductMasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductMa__Creat__1A14E395">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ProductMaster" Type="Self.ProductMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ProductMaster">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductMa__Modif__1B0907CE">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ProductMaster" Type="Self.ProductMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ProductMaster">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Purchaser__Creat__3B75D760">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Purchaser">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Purchaser__Modif__3C69FB99">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Purchaser" Type="Self.Purchaser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Purchaser">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__UserRoleId__1273C1CD">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SandSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Ledgers" EntityType="Self.Ledger" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
+          <EntitySet Name="OrderMasters" EntityType="Self.OrderMaster" />
+          <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetail" />
+          <EntitySet Name="PaymentModes" EntityType="Self.PaymentMode" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="ProductMasters" EntityType="Self.ProductMaster" />
+          <EntitySet Name="Purchasers" EntityType="Self.Purchaser" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+          <AssociationSet Name="FK__Customer__Create__276EDEB3" Association="Self.FK__Customer__Create__276EDEB3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__Modifi__286302EC" Association="Self.FK__Customer__Modifi__286302EC">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ledger__Customer__6477ECF3" Association="Self.FK__Ledger__Customer__6477ECF3">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Ledger" EntitySet="Ledgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Custo__5CD6CB2B" Association="Self.FK__OrderMast__Custo__5CD6CB2B">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="OrderMaster" EntitySet="OrderMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentDe__Custo__0A9D95DB" Association="Self.FK__PaymentDe__Custo__0A9D95DB">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ledger__OrderID__66603565" Association="Self.FK__Ledger__OrderID__66603565">
+            <End Role="OrderMaster" EntitySet="OrderMasters" />
+            <End Role="Ledger" EntitySet="Ledgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ledger__PaymentD__1EA48E88" Association="Self.FK__Ledger__PaymentD__1EA48E88">
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+            <End Role="Ledger" EntitySet="Ledgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ledger__Purchase__656C112C" Association="Self.FK__Ledger__Purchase__656C112C">
+            <End Role="Purchaser" EntitySet="Purchasers" />
+            <End Role="Ledger" EntitySet="Ledgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Order__151B244E" Association="Self.FK__OrderDeta__Order__151B244E">
+            <End Role="OrderMaster" EntitySet="OrderMasters" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Creat__5EBF139D" Association="Self.FK__OrderMast__Creat__5EBF139D">
+            <End Role="User" EntitySet="Users" />
+            <End Role="OrderMaster" EntitySet="OrderMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Modif__5FB337D6" Association="Self.FK__OrderMast__Modif__5FB337D6">
+            <End Role="User" EntitySet="Users" />
+            <End Role="OrderMaster" EntitySet="OrderMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Payme__1CBC4616" Association="Self.FK__OrderMast__Payme__1CBC4616">
+            <End Role="PaymentMode" EntitySet="PaymentModes" />
+            <End Role="OrderMaster" EntitySet="OrderMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderMast__Purch__5DCAEF64" Association="Self.FK__OrderMast__Purch__5DCAEF64">
+            <End Role="Purchaser" EntitySet="Purchasers" />
+            <End Role="OrderMaster" EntitySet="OrderMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentDe__Creat__0D7A0286" Association="Self.FK__PaymentDe__Creat__0D7A0286">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentDe__Payme__0C85DE4D" Association="Self.FK__PaymentDe__Payme__0C85DE4D">
+            <End Role="PaymentMode" EntitySet="PaymentModes" />
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentDe__Purch__0B91BA14" Association="Self.FK__PaymentDe__Purch__0B91BA14">
+            <End Role="Purchaser" EntitySet="Purchasers" />
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentMo__Creat__6E01572D" Association="Self.FK__PaymentMo__Creat__6E01572D">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PaymentMode" EntitySet="PaymentModes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PaymentMo__Modif__6EF57B66" Association="Self.FK__PaymentMo__Modif__6EF57B66">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PaymentMode" EntitySet="PaymentModes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Created__32E0915F" Association="Self.FK__Product__Created__32E0915F">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Modifie__33D4B598" Association="Self.FK__Product__Modifie__33D4B598">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__31EC6D26" Association="Self.FK__Product__Product__31EC6D26">
+            <End Role="ProductMaster" EntitySet="ProductMasters" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductMa__Creat__1A14E395" Association="Self.FK__ProductMa__Creat__1A14E395">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ProductMaster" EntitySet="ProductMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductMa__Modif__1B0907CE" Association="Self.FK__ProductMa__Modif__1B0907CE">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ProductMaster" EntitySet="ProductMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchaser__Creat__3B75D760" Association="Self.FK__Purchaser__Creat__3B75D760">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Purchaser" EntitySet="Purchasers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchaser__Modif__3C69FB99" Association="Self.FK__Purchaser__Modif__3C69FB99">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Purchaser" EntitySet="Purchasers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__UserRoleId__1273C1CD" Association="Self.FK__User__UserRoleId__1273C1CD">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <FunctionImport Name="Generate_PaymentReceipt" ReturnType="Collection(SandSModel.Generate_PaymentReceipt_Result)">
+            <Parameter Name="PaymentID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Generate_POInvoice" ReturnType="Collection(SandSModel.Generate_POInvoice_Result)">
+            <Parameter Name="OrderNo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GenerateOrderNumber" ReturnType="Collection(SandSModel.GenerateOrderNumber_Result)" />
+          <FunctionImport Name="GetAllPayments">
+            <Parameter Name="Purchaser" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllPO">
+            <Parameter Name="Purchaser" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllPurchaser" ReturnType="Collection(SandSModel.GetAllPurchaser_Result)" />
+          <FunctionImport Name="GetAllPurchaser1" ReturnType="Collection(SandSModel.GetAllPurchaser1_Result)" />
+          <FunctionImport Name="GetLedger" ReturnType="Collection(SandSModel.GetLedger_Result)" />
+          <FunctionImport Name="GetLedgerBalance">
+            <Parameter Name="PurChaserID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetLedgerBalance2">
+            <Parameter Name="PurChaserID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetLedgerBalanceByID">
+            <Parameter Name="PurChaserID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PaymentStatementByDate" ReturnType="Collection(SandSModel.PaymentStatementByDate_Result)">
+            <Parameter Name="Purchaser" Mode="In" Type="String" />
+            <Parameter Name="StartDate" Mode="In" Type="String" />
+            <Parameter Name="EndDate" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Usp_GenerateOrderNumber" ReturnType="Collection(SandSModel.Usp_GenerateOrderNumber_Result)" />
+          <FunctionImport Name="Usp_GetYearwisepaymentdetails" ReturnType="Collection(SandSModel.Usp_GetYearwisepaymentdetails_Result)">
+            <Parameter Name="year" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="UspDashBoard" ReturnType="Collection(SandSModel.UspDashBoard_Result)" />
+          <FunctionImport Name="UspDashBoardSevenDaysOrder" ReturnType="Collection(SandSModel.UspDashBoardSevenDaysOrder_Result)" />
+          <FunctionImport Name="UspShowInventory">
+            <Parameter Name="FromDate" Mode="In" Type="String" />
+            <Parameter Name="ToDate" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="Generate_PaymentReceipt_Result">
+          <Property Type="Int64" Name="PaymentID" Nullable="false" />
+          <Property Type="DateTime" Name="PaymentDate" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="PaymentAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Details" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="PaymentType" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Inwords" Nullable="true" />
+          <Property Type="String" Name="Vendor" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="Firm" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="Generate_POInvoice_Result">
+          <Property Type="String" Name="OrderNo" Nullable="false" MaxLength="30" />
+          <Property Type="DateTime" Name="OrderDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="100" />
+          <Property Type="Decimal" Name="TotalAmount" Nullable="true" Precision="19" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="Decimal" Name="Rate" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="Amount" Nullable="true" Precision="23" Scale="2" />
+          <Property Type="String" Name="Vendor" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="ContactNo" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="EmailID" Nullable="false" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="GenerateOrderNumber_Result">
+          <Property Type="String" Name="OrderNo" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="CurrentID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllPurchaser_Result">
+          <Property Type="Int64" Name="PurchaserID" Nullable="false" />
+          <Property Type="String" Name="FirmName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="500" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="String" Name="PurchaserFullName" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="PAN" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ContactNo" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="EmailID" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="AdminFullName" Nullable="true" MaxLength="101" />
+        </ComplexType>
+        <ComplexType Name="GetAllPurchaser1_Result">
+          <Property Type="Int64" Name="PurchaserID" Nullable="false" />
+          <Property Type="String" Name="FirmName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="500" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="String" Name="PurchaserFullName" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="PAN" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ContactNo" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="EmailID" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="AdminFullName" Nullable="true" MaxLength="101" />
+        </ComplexType>
+        <ComplexType Name="GetLedger_Result">
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+          <Property Type="Int64" Name="LedgerID" Nullable="false" />
+          <Property Type="Decimal" Name="Credit" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Debit" Nullable="true" Precision="19" />
+          <Property Type="Int32" Name="OrderID" Nullable="false" />
+          <Property Type="String" Name="OrderNo" Nullable="false" MaxLength="30" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="19" />
+          <Property Type="String" Name="Firm" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="PaymentStatementByDate_Result">
+          <Property Type="Int32" Name="PurchaserID" Nullable="true" />
+          <Property Type="Int32" Name="PaymentID" Nullable="true" />
+          <Property Type="Decimal" Name="PaymentAmount" Nullable="true" Precision="19" />
+          <Property Type="String" Name="Reference" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PaymentType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Firm" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PaymentDate" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Usp_GenerateOrderNumber_Result">
+          <Property Type="String" Name="OrderNo" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="CurrentID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Usp_GetYearwisepaymentdetails_Result">
+          <Property Type="String" Name="CurrentYear" Nullable="true" MaxLength="30" />
+          <Property Type="Decimal" Name="april" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="may" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="june" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="july" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="august" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="sept" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="oct" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="nov" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="Decm" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="jan" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="feb" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="march" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="Total" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="UspDashBoard_Result">
+          <Property Type="String" Name="Date" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="ThreeDaysPayments" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="UspDashBoardSevenDaysOrder_Result">
+          <Property Type="String" Name="Date" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="SevenDaysSO" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SandSModelStoreContainer" CdmEntityContainer="SandSEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="SandSModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="CustomerNo" ColumnName="CustomerNo" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ledgers">
+            <EntityTypeMapping TypeName="SandSModel.Ledger">
+              <MappingFragment StoreEntitySet="Ledger">
+                <ScalarProperty Name="LedgerID" ColumnName="LedgerID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="PurchaserID" ColumnName="PurchaserID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="PaymentDetailID" ColumnName="PaymentDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="SandSModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetail">
+                <ScalarProperty Name="OrderDetailID" ColumnName="OrderDetailID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderMasters">
+            <EntityTypeMapping TypeName="SandSModel.OrderMaster">
+              <MappingFragment StoreEntitySet="OrderMaster">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="PurchaserID" ColumnName="PurchaserID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="PaymentModeID" ColumnName="PaymentModeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentDetails">
+            <EntityTypeMapping TypeName="SandSModel.PaymentDetail">
+              <MappingFragment StoreEntitySet="PaymentDetails">
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="PurchaserID" ColumnName="PurchaserID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="PaymentModeID" ColumnName="PaymentModeID" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="PaymentAmount" ColumnName="PaymentAmount" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentModes">
+            <EntityTypeMapping TypeName="SandSModel.PaymentMode">
+              <MappingFragment StoreEntitySet="PaymentMode">
+                <ScalarProperty Name="PaymentModeID" ColumnName="PaymentModeID" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="SandSModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductMasters">
+            <EntityTypeMapping TypeName="SandSModel.ProductMaster">
+              <MappingFragment StoreEntitySet="ProductMaster">
+                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+                <ScalarProperty Name="ProductMasterName" ColumnName="ProductMasterName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Purchasers">
+            <EntityTypeMapping TypeName="SandSModel.Purchaser">
+              <MappingFragment StoreEntitySet="Purchaser">
+                <ScalarProperty Name="PurchaserID" ColumnName="PurchaserID" />
+                <ScalarProperty Name="PurchaserNo" ColumnName="PurchaserNo" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SandSModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="SandSModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Generate_PaymentReceipt" FunctionName="SandSModel.Store.Generate_PaymentReceipt">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.Generate_PaymentReceipt_Result">
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="PaymentAmount" ColumnName="PaymentAmount" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="Inwords" ColumnName="Inwords" />
+                <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+                <ScalarProperty Name="Firm" ColumnName="Firm" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Generate_POInvoice" FunctionName="SandSModel.Store.Generate_POInvoice">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.Generate_POInvoice_Result">
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GenerateOrderNumber" FunctionName="SandSModel.Store.GenerateOrderNumber">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.GenerateOrderNumber_Result">
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="CurrentID" ColumnName="CurrentID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllPayments" FunctionName="SandSModel.Store.GetAllPayments" />
+          <FunctionImportMapping FunctionImportName="GetAllPO" FunctionName="SandSModel.Store.GetAllPO" />
+          <FunctionImportMapping FunctionImportName="GetAllPurchaser" FunctionName="SandSModel.Store.GetAllPurchaser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.GetAllPurchaser_Result">
+                <ScalarProperty Name="PurchaserID" ColumnName="PurchaserID" />
+                <ScalarProperty Name="FirmName" ColumnName="FirmName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PurchaserFullName" ColumnName="PurchaserFullName" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="AdminFullName" ColumnName="AdminFullName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllPurchaser1" FunctionName="SandSModel.Store.GetAllPurchaser1">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.GetAllPurchaser1_Result">
+                <ScalarProperty Name="PurchaserID" ColumnName="PurchaserID" />
+                <ScalarProperty Name="FirmName" ColumnName="FirmName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PurchaserFullName" ColumnName="PurchaserFullName" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="AdminFullName" ColumnName="AdminFullName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetLedger" FunctionName="SandSModel.Store.GetLedger">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.GetLedger_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="LedgerID" ColumnName="LedgerID" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Firm" ColumnName="Firm" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetLedgerBalance" FunctionName="SandSModel.Store.GetLedgerBalance" />
+          <FunctionImportMapping FunctionImportName="GetLedgerBalance2" FunctionName="SandSModel.Store.GetLedgerBalance2" />
+          <FunctionImportMapping FunctionImportName="GetLedgerBalanceByID" FunctionName="SandSModel.Store.GetLedgerBalanceByID" />
+          <FunctionImportMapping FunctionImportName="PaymentStatementByDate" FunctionName="SandSModel.Store.PaymentStatementByDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.PaymentStatementByDate_Result">
+                <ScalarProperty Name="PurchaserID" ColumnName="PurchaserID" />
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="PaymentAmount" ColumnName="PaymentAmount" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="Firm" ColumnName="Firm" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_GenerateOrderNumber" FunctionName="SandSModel.Store.Usp_GenerateOrderNumber">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.Usp_GenerateOrderNumber_Result">
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="CurrentID" ColumnName="CurrentID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_GetYearwisepaymentdetails" FunctionName="SandSModel.Store.Usp_GetYearwisepaymentdetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.Usp_GetYearwisepaymentdetails_Result">
+                <ScalarProperty Name="CurrentYear" ColumnName="CurrentYear" />
+                <ScalarProperty Name="april" ColumnName="april" />
+                <ScalarProperty Name="may" ColumnName="may" />
+                <ScalarProperty Name="june" ColumnName="june" />
+                <ScalarProperty Name="july" ColumnName="july" />
+                <ScalarProperty Name="august" ColumnName="august" />
+                <ScalarProperty Name="sept" ColumnName="sept" />
+                <ScalarProperty Name="oct" ColumnName="oct" />
+                <ScalarProperty Name="nov" ColumnName="nov" />
+                <ScalarProperty Name="Decm" ColumnName="Decm" />
+                <ScalarProperty Name="jan" ColumnName="jan" />
+                <ScalarProperty Name="feb" ColumnName="feb" />
+                <ScalarProperty Name="march" ColumnName="march" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UspDashBoard" FunctionName="SandSModel.Store.UspDashBoard">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.UspDashBoard_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ThreeDaysPayments" ColumnName="ThreeDaysPayments" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UspDashBoardSevenDaysOrder" FunctionName="SandSModel.Store.UspDashBoardSevenDaysOrder">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SandSModel.UspDashBoardSevenDaysOrder_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SevenDaysSO" ColumnName="SevenDaysSO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UspShowInventory" FunctionName="SandSModel.Store.UspShowInventory" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,61 @@
+﻿@model Corporate.PaymentMode
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Styles/Custom.css" rel="stylesheet">
+
+<header id="headerz1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="BGHeader"><span class="glyphicon glyphicon-pawn" aria-hidden="true"></span>Modify Payment</h2>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading text-center wasit_panelTitle" style="background-color: red;">
+        <h3 class="panel-title"><b><u>Edit Purchaser</u></b></h3>
+    </div>
+    <div class="panel-body ">
+
+        @using (Html.BeginForm())
+        {
+                 
+            @Html.ValidationSummary(true)
+
+    
+
+            @Html.HiddenFor(model => model.PaymentModeID)
+
+                    
+                   
+            <div class="form-group">
+                <div class="col-md-4">
+                    <label for="firm-name" class="control-label">@Html.LabelFor(model => model.PaymentType, new { @class = "control-label" })</label>
+                    @Html.TextBoxFor(model => model.PaymentType, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PaymentType)
+                </div>
+                <div class="col-md-4">
+                    <label for="firm-name" class="control-label">@Html.LabelFor(model => model.IsActive, new { @class = "control-label" })</label><br />
+                    @Html.EditorFor(model => model.IsActive, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IsActive)
+                </div>
+                <div class="col-md-4">
+                    <label for="firm-name" class="control-label"></label><br />
+                    <input type="submit" value="Save" class="btn btn-primary success" />
+                </div>
+            </div>
+        }
+    </div>
+    </div>
+    <div>
+        @Html.ActionLink("Back", "PaymentMode", "Setting")
+    </div>

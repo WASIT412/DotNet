@@ -1,0 +1,245 @@
+﻿@{
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/HighChart.js"></script>
+@using Highsoft.Web.Mvc.Charts
+<style>
+    h2.BGHeader {
+        color: orange;
+        font-variant: small-caps;
+    }
+    .dash-box {
+        text-align: center;
+    }
+</style>
+
+<div class="col-md-12 row">
+<header id="headerz1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="BGHeader"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>DashBoard</h2>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+
+
+    <div class="col-md-12 row">
+<div class="chartContainer col-md-6">PO
+    <div>
+         @(Html.Highsoft().Highcharts(
+        new Highcharts
+        {
+            Chart = new Highsoft.Web.Mvc.Charts.Chart
+            {
+                PlotBackgroundColor = null,
+                PlotBorderWidth = null,
+                PlotShadow = new Shadow
+                {
+                    Enabled = false
+                }
+            },
+            Title = new Title
+            {
+                Text = "Last Seven PO"
+            },
+            Tooltip = new Tooltip
+            {
+                PointFormat = "{series.name}: <b>{point.percentage:.1f}%</b>"
+            },
+            PlotOptions = new PlotOptions
+            {
+                Pie = new PlotOptionsPie
+                {
+                    AllowPointSelect = true,
+                    Cursor = PlotOptionsPieCursor.Pointer,
+                    DataLabels = new PlotOptionsPieDataLabels
+                    {
+                        Enabled = false
+                    },
+                    ShowInLegend = true,
+                }
+            },
+                      
+            Series = new List<Series>
+            {                    
+                new PieSeries
+                {                    
+                    Name = "PO Share",
+                    Data = @ViewData["pieData"] as List<PieSeriesData>,   Center = new string [] { "150%", "105%" },StartAngle = -90,
+                    EndAngle = 90,
+                },
+                
+            }
+            
+        }
+        , "chart")
+    )
+    </div>
+</div><br />
+<div class="chartContainr2 col-md-6">SO
+   
+        @(Html.Highsoft().Highcharts(
+        new Highcharts
+        {
+            Chart = new Highsoft.Web.Mvc.Charts.Chart
+            {
+                PlotBackgroundColor = null,
+                PlotBorderWidth = null,
+                PlotShadow = new Shadow
+                {
+                    Enabled = false
+                }
+            },
+            Title = new Title
+            {
+                Text = "Last Seven SO"
+            },
+            Tooltip = new Tooltip
+            {
+                PointFormat = "{series.name}: <b>{point.percentage:.1f}%</b>{series.description}"
+            },
+            PlotOptions = new PlotOptions
+            {
+                Pie = new PlotOptionsPie
+                {
+                    AllowPointSelect = true,
+                    Cursor = PlotOptionsPieCursor.Pointer,
+                    DataLabels = new PlotOptionsPieDataLabels
+                    {
+                        Enabled = false
+                    },
+                    ShowInLegend = true
+                }
+            },
+              XAxis = new List<XAxis>
+            {
+                new XAxis
+                {
+                    Title = new XAxisTitle
+                    {
+                        Text = null
+                    },
+                    Categories = new List<string> { "Africa", "America", "Asia", "Europe", "Oceania" }
+                }
+            },
+            YAxis = new List<YAxis>
+            {            
+                new YAxis
+                {
+                    Min = 0,
+                    Title = new YAxisTitle
+                    {
+                        Text = "Population (millions)",
+                        Align = YAxisTitleAlign.High
+                    }
+                }
+            },               
+            Series = new List<Series>
+            {                    
+                new PieSeries
+                {                    
+                    Name = "PO Share",
+                    Data = @ViewData["pieData"] as List<PieSeriesData>,Center = new string [] { "50%", "50%" }
+                },
+                
+            }
+        }
+        , "chart")
+    )
+    
+   
+</div>
+</div>
+
+<section id="mainz">
+
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title"><b><u>Website Overview</u></b></h3>
+            </div>
+            <div class="panel-body ">
+                <div class="col-md-3">
+                    <div class="well dash-box">
+                        <h2><span class="glyphicon glyphicon-user" aria-hidden="true"></span>203</h2>
+                        <h4>User</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">                                                                                                           
+                    <div class="well dash-box">
+                        
+                        <h2><span class="glyphicon glyphicon-list-alt" aria-hidden="true" aria-label="Purchasing"></span></h2>
+                        <h4> @Html.ActionLink("Purchasing", "CreatePO", "PO", null, new { style = "text-decoration:none" })</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="well dash-box">
+                        <h2><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>296</h2>
+                        <h4>Post</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="well dash-box">
+                        <h2><span class="glyphicon glyphicon-stats" aria-hidden="true"></span></h2>
+                        <h4> @Html.ActionLink("Payment", "Payment", "Accounting", null, new { style = "text-decoration:none" })</h4>
+                    </div>
+                </div>
+
+                  <div class="col-md-3">
+                    <div class="well dash-box">
+                        <h2><span class="glyphicon glyphicon-book" aria-hidden="true"></span></h2>
+                        <h4> @Html.ActionLink("Ledger", "Index", "Accounting",null, new { style = "text-decoration:none" })</h4>
+                    </div>
+                </div>
+                  <div class="col-md-3">
+                    <div class="well dash-box">
+                        <h2><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></h2>
+                        <h4>Calendar</h4>
+                    </div>
+                </div>
+                  <div class="col-md-3">
+                    <div class="well dash-box">
+                        <h2><span class="glyphicon glyphicon-bell" aria-hidden="true"></span>25</h2>
+                        <h4>Nofication</h4>
+                    </div>
+                </div>
+                  <div class="col-md-3">
+                    <div class="well dash-box">
+                        <h2><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span></h2>
+                        <h4>Account</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title"><b><u>New Enteries</u></b></h3>
+            </div>
+            <div class="panel-body ">
+
+                <table class="table table-responsive  table-hover">
+                    <thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
+                    <tbody><tr><td>Wasit</td><td>wasit@gomol.com</td><td>9906832160</td></tr>
+                        <tr><td>Sheikh</td><td>sheikh@doma.com</td><td>920510092</td></tr>
+                        <tr><td>Rasheed</td><td>AdilRas@yamail.com</td><td>5452652665</td></tr>
+                        <tr><td>Adam</td><td>adami@air.com</td><td>97550542256</td></tr>
+                        <tr><td>Aleem</td><td>dar@yamil.com</td><td>9225456855</td></tr>
+                    </tbody>
+                </table>
+                </div></div>
+
+    </div>
+    <div class="col-md-3" style="height:auto; border:1px solid green">Goolge <br /> Advertisement<br /> Launched<br />Soon
+    </div>
+</section>
+    </div>
+
+
+

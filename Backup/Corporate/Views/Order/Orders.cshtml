@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "Purchaser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<header id="headerz1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="BGHeader"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>Order List</h2>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+
+@*start of grid*@
+<div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title"><b><u>Orders</u></b></h3><a  data-toggle="modal" data-target="#addPuchaser" style="cursor:pointer"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+            </div>
+            <div class="panel-body ">
+
+                <table class="table table-responsive  table-hover">
+                    <thead><tr><th>Firm Name</th><th>Contact Person</th><th>Address</th><th>DOB</th><th>Mobile</th><th>Email</th><th>IsActive</th></tr></thead>
+                    <tbody>
+                        <tr>
+                        <td>Name</td><td>wasit@gomol.com</td><td>9906832160</td>
+                      </tr>
+                    </tbody>
+                </table>
+                </div></div>
+@*end of grid*@
+
+
+<script>
+   
+    
+</script>
+
+ <div class="modal fade" id="addPuchaser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+   
+        <h4 class="modal-title" id="exampleModalLabel">Create New Order</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+
+            <div class="Container col-lg-6 col-xs-12 col-md-12">
+  
+    <div class="master col-lg-12 col-xs-12 col-md-12">
+        <table class="table table-responsive">
+            <tr >
+                <td class="col-lg-2 col-xs-6 col-md-6">Order Number</td>
+                <td class="col-lg-4 col-xs-6 col-md-6">
+                    <input type="text" id="orderNo" class="form-control" /><span class="error">Order Number required</span></td>
+
+                <td class="col-lg-2 col-xs-6 col-md-6">Order Date</td>
+                <td class="col-lg-4 col-xs-6 col-md-6">
+                    <input type="text" id="orderDate" class="form-control"  /><span class="error">Order Date required</span></td>
+            </tr>
+            <tr>
+                <td class="col-lg-3 col-xs-6 col-md-6">Description</td>
+                <td colspan="2">
+                    <textarea id="Description" class="form-control"></textarea></td>
+            </tr>
+
+
+        </table>
+    </div>
+    <!--End of master -->
+    <div class="detail">
+        <h2><b><u>Order Item</u></b></h2>
+        <table class="table table-responsive">
+            <tr>
+                <td>Category</td>
+                 <td>Product</td>
+                 <td>Quantity</td>
+                 <td>Rate</td>
+                 <td>&nbsp</td>
+            </tr>
+            <tr class="myContainer" id="mainRow">
+                <td><select id="productCategory" class="pc form-control" onchange="getProduct(this)">
+                    <option>Select</option>
+
+                    </select>
+                    <span class="error">Select Category</span>
+                </td>
+
+                <td><select id="product" class="product form-control" ><option>Select</option></select>
+                    <span class="error">Select Product</span>
+                </td>
+                 <td>
+                    <input type="text" id="Quantity" class="Quantity form-control" /><span class="error">Quantity required</span></td>
+                 <td>
+                    <input type="text" id="Rate" class="Rate form-control" /><span class="error" >Rate required</span></td>
+                 <td>
+                    <input type="button" value="Add" id="add" style="width:80px" class="btn btn-success" /></td>
+            </tr>
+        </table>
+
+        <div class="OrderItems">
+            <table class="table table-responsive" id="oderDetailsItem">
+
+
+            </table>
+            <span id="oderItemsError" style="color:red"></span>
+        </div><!--End of OrderItems -->
+        <div style="padding:10px 0; text-align:right">
+            <input type="button" id="submit" value="Save Order" class="btn btn-danger" style="padding:10px 20px"/>
+        </div><!--End of buttonSubmit -->
+<!--End of Order Items -->
+
+    </div>
+    <!--End of detail -->
+</div>
+
+         
+            
+            
+            <div class="form-group"> 
+              <div class="col-md-6">
+            <label for="firm-name" class="control-label">Firm Name</label>
+            <input type="text" class="form-control" id="firm-name">
+             </div>
+              <div class="col-md-6">
+               <label for="pan" class="control-label">PAN</label>
+            <input type="text" class="form-control" id="pan">
+                  </div>
+          </div>
+
+             
+
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="save()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

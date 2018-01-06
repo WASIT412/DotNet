@@ -1,0 +1,133 @@
+﻿@using Corporate.Models;
+@model Credential
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Images/logo.ico" rel="shortcut icon" type="image/x-icon" />
+    <title>Login</title>
+    <script src="~/Scripts/jquery-1.11.2.js"></script>
+    <link href="~/Bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="~/Bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="~/Styles/Default.css" rel="stylesheet">
+</head>
+<body style="background: url('../logo.ico')">
+    <nav></nav>
+    <header id="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="text-center">Admistrator<small> Login</small> </h1>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <section id="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-4" style="margin-left: 360px; border: 3px solid grey; border-radius: 2px">
+                    <div style="background-image: url('../Images/topheaderline.jpg'); width: 70px; height: auto"></div>
+                    @* class=" text-center col-md-12 col-sm-12 col-md-offset-4 alert alert-danger help-block collapse"*@
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { onsubmit = "return ValidationEvent()" }))
+                    {
+                        @Html.AntiForgeryToken()
+                       
+                        <div id="ErrorMessage" class="alert alert-danger collapse">
+                            @Html.ValidationSummary()
+                        </div>
+                        <div class="col-md-6 col-md-offset-6 col-xs-12">
+                            <div class="loginPage panel panel-info">
+                                <div class="form-group">
+                                    <span class=""><i class="glyphicon glyphicon-user"></i>UserName</span>
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", autocomplete = "off", id = "Username" })
+                                    @Html.ValidationMessageFor(m => m.UserName)
+                                    <span class="error">Username Required !</span>
+                                </div>
+                                <div class="form-group">
+                                    <span class=""><i class="glyphicon glyphicon-lock"></i>Password</span>
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", autocomplete = "off", id = "Password" })
+                                    @Html.ValidationMessageFor(m => m.Password)
+                                    <span class="error">Password Required !</span>
+                                </div>
+                                <div class="form-group">
+                                    <input id="BtnLogin" type="submit" class="btn btn-success btn-pressure" name="BtnLogin" value="Login" />
+                                    <input id="BtnReset" type="reset" class="btn btn-info btn-pressure" name="BtnReset" value="Reset" />
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    }
+
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer id="footer">
+        <div class="container">
+            <div class="col-md-8" style="margin-left: 360px;">
+                <p>Copyright AdminStore &copy; 2017</p>
+            </div>
+        </div>
+    </footer>
+    <style>
+        span.error {
+            color: red;
+            display: block;
+            font-size: 90%;
+            visibility: hidden;
+        }
+        .help-block ul { list-style-type: none;
+        }
+        #ErrorMessage {
+            font-size: 90%;
+            display: block; visibility: visible;
+        }
+    </style>
+    <script>
+    
+        function ValidationEvent() {
+                
+                var isAllValid = true;
+
+                if ($('#Username').val().trim() == '' ) {
+                    $(' #ErrorMessage ').removeClass('collapse');
+                   $(' #ErrorMessage ').css('visibility', 'visible');
+                    $('#Username').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false
+                }
+                else {
+                    $(' #ErrorMessage ').css('visibility', 'hidden');
+                    $('#Username').siblings('span.error').css('visibility', 'hidden');
+                   
+                }
+
+                if ($('#Password').val().trim() == '') {
+                    $(' #ErrorMessage ').removeClass('collapse');
+                    $(' #ErrorMessage ').css('visibility', 'visible');
+                    $('#Password').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#Password').siblings('span.error').css('visibility', 'hidden');
+                    $(' #ErrorMessage ').css('visibility', 'hidden');
+                }
+                return isAllValid;
+            }
+
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,377 @@
+﻿@{
+    ViewBag.Title = "Purchaser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Corporate.ViewModel;
+@model IEnumerable<Corporate.GetAllPurchaser1_Result>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<header id="headerz1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="BGHeader"><span class="glyphicon glyphicon-pawn" aria-hidden="true"></span>Purchaser</h2>
+            </div>
+        </div>
+    </div>
+
+</header>
+          <div id="Response" style="display:none">
+                  <p id="ResponseMsg"></p>
+          </div> 
+
+@*start of grid*@
+<div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title"><b><u>Purchasers</u></b></h3><a  class="pull-right" data-toggle="modal" data-target="#addPuchaser" style="cursor:pointer"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i></a>
+            </div>
+            <div class="panel-body ">
+
+                <table class="table table-responsive  table-hover">
+                    <thead><tr><th>Firm Name</th><th>Contact Person</th><th>PAN</th><th>Address</th><th>Mobile</th><th>Email</th><th>IsActive</th><th></th><th></th></tr></thead>
+                    <tbody>
+                       @foreach (Corporate.GetAllPurchaser1_Result pur in @Model)
+                       {
+
+                        <tr>
+                        <td>@Html.ActionLink(@pur.FirmName, "Detail", new { @Selected = @pur.PurchaserID})</td><td>@pur.PurchaserFullName</td><td> @pur.PAN</td><td>@pur.Address</td><td>@pur.ContactNo</td><td>@pur.EmailID</td><td>@pur.IsActive</td>
+                            @*<td><a  data-toggle="modal" data-target="#remove" style="cursor:pointer">@Html.ActionLink(".", "Remove", new { @Selected = @pur.PurchaserID }, new {@class="glyphicon glyphicon-trash" }) </a></td>*@
+                            <td>@Html.ActionLink(".", "Detail", new { @Selected = @pur.PurchaserID }, new {@class="glyphicon glyphicon-pencil" })</td>
+                            <td><a  data-toggle="modal"  style="cursor:pointer" onclick="openModal(@pur.PurchaserID)"><i class="glyphicon glyphicon-trash"></i></a></td>
+                            
+                      </tr>
+                       }
+                    </tbody>
+                </table>
+                </div></div>
+@*end of grid*@
+
+
+<script>
+    var delID;
+    $(document).ready(function () {
+        $("#ImageBro").change(function () {
+            var file = this.files;
+            if (file && file[0]) {
+                ReadImage(file[0]);
+            }
+        })
+
+        $('#dob').datepicker();
+    })
+    
+
+    var ReadImage = function (file) {
+        debugger;
+        var reader = new FileReader;
+        var image = new Image;
+        reader.readAsDataURL(file);
+        reader.onload = function (_file) {
+            image.src = _file.target.result;
+            image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = ~~(file.size / 1024) + "KB"
+                $("#targetImg").attr('src',_file.target.result);
+                $("#description").text(size)
+                $("#imgPreview").show();
+            }
+        }
+    }
+    var clearPre = function () {
+        $("#ImageBro").val('');
+        $("#description").text('')
+        $("#imgPreview").hide();
+    }
+
+    var save = function () {
+        
+        var isValid = true;
+       var files = document.getElementsByName("ImageFile");
+        var file = $('#ImageBro').get(0).files;
+      
+        var fd = new FormData();
+        fd.append('ImageFile', file[0]);
+
+       // var fd= new FormData();
+       // iData.append("ImageFile", fd[0]);
+       // iData.append("PersonMane", "SamsungA8");
+        //console.log(fd);
+        var ImagePath= files[0].value;
+
+
+
+        if ($('#firm-name').val().trim() == '') {
+            $('#firm-name').siblings('span.error').text('Firm Name is Required').css('visibility', 'visible');
+            isValid = false;
+        }
+        else {
+            $('#firm-name').siblings('span.error').css('visibility', 'hidden');
+        }
+
+        if ($('#first-name').val().trim() == '') {
+            $('#first-name').siblings('span.error').text('first Name is Required').css('visibility', 'visible');
+            isValid = false;
+        }
+        else {
+            $('#first-name').siblings('span.error').css('visibility', 'hidden');
+        }
+
+        if ($('#last-name').val().trim() == '') {
+            $('#last-name').siblings('span.error').text('Last Name is Required').css('visibility', 'visible');
+            isValid = false;
+        }
+        else {
+            $('#last-name').siblings('span.error').css('visibility', 'hidden');
+        }
+
+        if ($('#dob').val().trim() == '') {
+            $('#dob').siblings('span.error').text('DOB is Required').css('visibility', 'visible');
+            isValid = false;
+        }
+        else {
+            $('#dob').siblings('span.error').css('visibility', 'hidden');
+        }
+
+
+        if ($('#mobile').val().trim() == '') {
+            $('#mobile').siblings('span.error').text('Mobile No. is Required').css('visibility', 'visible');
+            isValid = false;
+        }
+        else {
+            $('#mobile').siblings('span.error').css('visibility', 'hidden');
+        }
+
+        if ($('#email').val().trim() == '') {
+            $('#email').siblings('span.error').text('Email is Required').css('visibility', 'visible');
+            isValid = false;
+        }
+        else {
+            $('#email').siblings('span.error').css('visibility', 'hidden');
+        }
+        if ($('#address').val().trim() == '') {
+            $('#address').siblings('span.error').text('Address is Required').css('visibility', 'visible');
+            isValid = false;
+        }
+        else {
+            $('#address').siblings('span.error').css('visibility', 'hidden');
+        }
+
+
+
+        if (isValid) {
+            var data = {
+                
+             ImageFile:fd,
+                ImagePath:ImagePath,
+                    
+            PurchaserNo: $('#firm-name').val().trim(),
+                FirstName: $('#first-name').val().trim(),
+                LastName: $('#last-name').val().trim(),
+                PAN: $('#pan').val().trim(),
+                Gender: $("#Gender option:selected").text(),
+                DOB: $('#dob').val().trim(),
+                ContactNo: $('#mobile').val().trim(),
+                EmailID: $('#email').val().trim(),
+                Address: $('#address').val().trim(),
+                IsActive: $('#isactive').is(":checked")
+            }
+            $(this).val('Please Wait');
+            //alert(JSON.stringify(data));
+            $.ajax({
+                type: 'POST',
+                url: 'SavePurchaser',
+              // processData: false,
+                contentType: false,
+                contentType: 'application/json',
+                data: JSON.stringify(data), file: fd,
+              
+                success: function (data) {
+
+                    if (data.Respond) {
+                        $('#addPuchaser').modal('hide');
+                        var st = 'Record Inserted successfully.';
+                        $('#Response').append('<i class="glyphicon glyphicon-saved"></i><br/><p>' + st + '</p>');
+                        $('#Response').notifyModal({
+                            duration: 3500,
+                            placement: 'center',
+                            onTop: true,
+                        });
+                        $('#Response').text('');
+                      
+                        setTimeout(Redirect, 3000);
+                  
+                        
+                      
+                        //$('#Quantity,#Rate,#orderNo,#description,#orderdate').val('');
+                    }
+                    else if (data.Message > 0)
+                    {
+                        var st = 'Firm or Mobile No or Email already exist in our database.';
+                        $('#Response').append('<i class="glyphicon glyphicon-remove"></i><br/><p>' + st + '</p>');
+                        $('#Response').notifyModal({
+                            duration: 4500,
+                            placement: 'center',
+                            onTop: true,
+                        });
+                        $('#Response').text('');
+                    }
+                },
+                error: function (Error) { console.log(Error); $('#submit').text('Save'); }
+            });
+            list = [];
+            $(this).val('Save');
+        }
+
+    }
+    function Redirect() {
+        window.location.href = ' http://localhost:1795/Actor/Purchaser';
+    }
+
+    var openModal = function (id) {
+        $('#remove').modal('show');
+        delID = id;
+    }
+
+
+    $(document).on("click", "#btnDelete", function () {
+       
+        $.ajax({
+            type: "POST",
+            url: '/Actor/DeletePurchaser',
+            data: { ID: delID },
+            success: function (data) {
+                if (data.Respond)
+                    $('#remove').modal('hide');
+                window.location.href = ' http://localhost:1795/Actor/Purchaser';
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    });
+     @ViewBag.scripCall
+
+    function IPDetction() {
+        alert("ip");
+    }
+   
+</script>
+
+ <div class="modal fade" id="addPuchaser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+   
+        <h4 class="modal-title" id="exampleModalLabel">Add Purchaser</h4>
+      </div>
+      <div class="modal-body">
+    
+
+        <form enctype="multipart/form-data">
+         
+              <div class="form-group">
+                  <div id="imgPreview" class="thumbnail " style="display:none; height:30%;width:30%; overflow:auto">
+                  <img class="img-responsive" id="targetImg" />
+                  <div class="caption">
+                      <a href="#" onclick="clearPre()"><i class="glyphicon glyphicon-trash"></i></a>
+                  </div>
+                   @*<a href="#" onclick="upoadImg()" ><i class="glyphicon glyphicon-circle-arrow-up"></i></a>*@
+              </div>
+            <label for="message-text" class="control-label">Photo</label>
+              <input type="file" name="ImageFile" class="btn-primary" id="ImageBro">
+          </div>
+              
+            <div class="clearfix"></div>
+            <div class="form-group"> 
+              <div class="col-md-6">
+            <label for="firm-name" class="control-label">Firm Name</label>
+            <input type="text" class="form-control" id="firm-name"><span class="error"></span>
+             </div>
+              <div class="col-md-6">
+               <label for="pan" class="control-label">PAN</label>
+            <input type="text" class="form-control" id="pan">
+                  </div>
+          </div><div class="clearfix"></div><br/>
+
+             <div class="form-group">
+              <div class="col-md-6">
+            <label for="first-name" class="control-label">First Name</label>
+            <input type="text" class="form-control" id="first-name"><span class="error"></span>
+             </div>
+              <div class="col-md-6">
+               <label for="last-name" class="control-label">Last Name</label>
+            <input type="text" class="form-control" id="last-name"><span class="error"></span>
+                  </div>
+          </div><div class="clearfix"></div><br/>
+
+             <div class="form-group">
+                  <div class="col-md-6">
+            <label for="gender" class="control-label">Gender</label>
+           <select class="form-control" id="Gender">
+  <option value="">--Select--</option>
+  <option value="Male">Male</option>
+  <option value="Female">Female</option>
+  
+</select><span class="error"></span>
+             </div>
+           
+              <div class="col-md-6">
+               <label for="dob" class="control-label">Date of Birth</label>
+            <input type="text" class="form-control" id="dob"><span class="error"></span>
+                  </div>
+          </div><div class="clearfix"></div><br/>
+
+             <div class="form-group">
+              <div class="col-md-6">
+            <label for="mobile" class="control-label">Mobile Number</label>
+            <input type="text" class="form-control" id="mobile"><span class="error"></span>
+             </div>
+              <div class="col-md-6">
+               <label for="email" class="control-label">Email:</label>
+            <input type="text" class="form-control" id="email"><span class="error"></span>
+                  </div>
+          </div><div class="clearfix"></div><br/>
+
+             <div class="form-group">
+                <div class="col-md-6">
+            <label for="address" class="control-label">Address</label>
+            <input type="text" class="form-control" id="address"><span class="error"></span>
+             </div>
+              <div class="col-md-6">
+               <label for="isactive" class="control-label">IsActive</label>
+            <input type="checkbox" class="checkbox big" id="isactive">
+                  </div>
+          </div><div class="clearfix"></div><br />
+
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" onclick="save()" class="btn btn-primary" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="remove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       @* <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>*@
+        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+      </div>
+      <div class="modal-body">
+      <b>Are you sure to want Delete Record?</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

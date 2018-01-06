@@ -1,0 +1,593 @@
+﻿@{
+    ViewBag.Title = "All Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Corporate.ViewModel;
+@model IEnumerable<POGridVM>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        OrderType('DDOrderType');
+        LoadPurchaser('DDPurchaser');
+        LoadCategories($('#productCategory'));
+
+        $('#add').click(function () {
+          // alert($('#productCategory').val());
+            var isAllValid = true;
+            if ($('#productCategory').val() == 'Select') {
+                isAllValid = false;
+                $('#productCategory').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#productCategory').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#product').val() == 'Select') {
+                isAllValid = false;
+                $('#product').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#product').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if (!($('#Quantity').val().trim() != '' && (parseInt($('#Quantity').val()) || 0))) {
+                isAllValid = false;
+                $('#Quantity').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#Quantity').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if (!($('#Rate').val().trim() != '' && !isNaN($('#Rate').val().trim()))) {
+                isAllValid = false;
+                $('#Rate').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#Rate').siblings('span.error').css('visibility', 'hidden');
+            }
+            if (isAllValid) {
+                var $newRow = $('#mainRow').clone().removeAttr('id');
+                $('.pc', $newRow).val($('#productCategory').val());
+                $('.product', $newRow).val($('#product').val());
+
+                $('#add', $newRow).addClass('remove').val('Remove').removeClass('btn-success').addClass('btn-danger');
+
+                $('#productCategory,#product,#ItemDescription,#Quantity,#Rate,#add', $newRow).removeAttr('id');
+                $('span.error', $newRow).remove();
+                $('#oderDetailsItem').append($newRow);
+
+                $('#productCategory,#product').val("0");
+                $('#Quantity,#Rate,#ItemDescription').val('');
+                $('#oderItemsError').empty();
+            }
+        })
+
+        $('#oderDetailsItem').on('click', '.remove', function () {
+
+            $(this).parents('tr').remove();
+        })
+
+        $('#submit').click(function () {
+          
+            var isValid = true;
+            $('#orderitemError').text('');
+            var list = [];
+            var errorItemCount = 0;
+
+            $('#oderDetailsItem tbody tr').each(function (index, ele) {
+
+                if ($('select .product', this).val() == "0" || (parseInt($('.Quantity', this).val()) || 0) == 0 || $('.Rate', this).val() == "" || isNaN($('.Rate', this).val())) {
+
+                    errorItemCount++;
+                    $(this).addClass('error');
+                }
+                else {
+                    var orderItem = {
+                        ProductID: $('select.product', this).val(),
+                        Quantity: parseInt($('.Quantity', this).val().trim()),
+                        Rate: parseInt($('.Rate', this).val().trim()),
+                        ItemDescription:$('.ItemDescription', this).val().trim()
+                    }
+                }
+                list.push(orderItem);
+                // alert(JSON.stringify(list));
+            }
+
+
+        )
+            if (errorItemCount > 0) {
+                $('#oderItemsError').text(errorItemCount + ' error found');
+                isValid = false;
+            }
+            if (list.length == 0) {
+                $('#oderItemsError').text('Atleast one item');
+                isValid = false;
+            }
+
+            if ($('#DDOrderType').val() == 'Select') {
+                $('#DDOrderType').siblings('span.error').text('Select Order Type').css('visibility', 'visible');
+                isValid = false;
+            }
+            else {
+                $('#DDOrderType').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#Purchaser').val() == 'Select') {
+                $('#Purchaser').siblings('span.error').text('Select Purchaser').css('visibility', 'visible');
+                isValid = false;
+            }
+            else {
+                $('#Purchaser').siblings('span.error').css('visibility', 'hidden');
+            }
+          
+            if (isValid) {
+                var data = {
+                    PurchaserID: $('select.Purchaser').val(),
+                    PaymentModeID: $('select.OrderType').val(),
+                   // OrderDate: $('#orderDate').val().trim(),
+                    Description: $('#Description').val().trim(),
+                    OrderDetails: list
+                }
+                $(this).val('Please Wait');
+               // alert(JSON.stringify(data));
+                $.ajax({
+                    type: 'POST',
+                    url: 'CreateOrder',
+
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (data) {
+
+                        if (data.Message == 'Inserted') {
+                            $('#createOrder').modal('hide');
+                            var st = 'Order Created Successfully.';
+                            $('#Response').append('<i class="glyphicon glyphicon-saved"></i><br/><p>' + st + '</p>');
+                            $('#Response').notifyModal({
+                                duration: 3000,
+                                placement: 'center',
+                                onTop: true,
+                            });
+                          
+
+                            setTimeout(Redirect, 3000);
+                           
+                        }
+                        else if (!data.Exist) {
+                            var st = data.Message;
+                            $('#Response').append('<i class="glyphicon glyphicon-remove"></i><br/><p>' + st + '</p>');
+                            $('#Response').notifyModal({
+                                duration: 4000,
+                                placement: 'center',
+                                onTop: true,
+                            });
+                            setTimeout(Redirect, 4000);
+                        }
+                    },
+                    error: function (Error) { console.log(Error); $('#submit').text('Save'); }
+                });
+                list = [];
+                $(this).val('Save');
+            }
+        });
+
+
+
+    })
+    function Redirect() {
+        window.location.href = ' http://localhost:1795/PO/CreatePO';
+    }
+    
+    function RedirectById(id) {
+       
+        window.location.href ='http://localhost:1795/PO/CreatePO?route='+id;
+    }
+    var OrderTypes=[];
+    var Purchaser = [];
+    var Categories = [];
+    var product = [];
+    function OrderType(element) {
+
+
+        if (OrderTypes.length == 0) {
+            $.ajax({
+                type: "GET",
+                url: '/PO/getOrderType',
+                dataType: "json",
+                success: function (data) {
+                    //alert(JSON.stringify(data));
+                    OrderType = data.GenericList;
+
+                    $.each(OrderType, function (i, v) {
+                        $('#DDOrderType').append('<option value="' + v.Value + '">' + v.Text + '</option>');
+                        //  $ele.append($('<option/>').val(v.CategoryID).text(v.CategoryName));
+
+                    })
+                },
+                error: function (Error) { console.log(Error); alert('err'); }
+            })
+
+        }
+        else {
+           // renderCategory(element);
+        }
+    }
+
+
+    function LoadPurchaser(element) {
+
+
+        if (Purchaser.length == 0) {
+            $.ajax({
+                type: "GET",
+                url: '/PO/getPurchaser',
+                dataType: "json",
+                success: function (data) {
+                    //alert(JSON.stringify(data));
+                    Purchaser = data.GenericList;
+
+                    $.each(Purchaser, function (i, v) {
+                        $('#DDPurchaser').append('<option value="' + v.Value + '">' + v.Text + '</option>');
+                        //  $ele.append($('<option/>').val(v.CategoryID).text(v.CategoryName));
+
+                    })
+                    $.each(Purchaser, function (i, v) {
+                        $('#firm').append('<option value="' + v.Value + '">' + v.Text + '</option>');
+                        //  $ele.append($('<option/>').val(v.CategoryID).text(v.CategoryName));
+
+                    })
+                },
+                error: function (Error) { console.log(Error); alert('err'); }
+            })
+
+        }
+        else {
+            renderCategory(element);
+        }
+    }
+
+    function LoadCategories(element) {
+
+
+        if (Categories.length == 0) {
+            $.ajax({
+                type: "GET",
+                url: '/PO/getCategories',
+                dataType: "json",
+                success: function (data) {
+                  //  Categories = [];
+                   // product = [];
+                    //getProduct(0);
+                    Categories = data.GenericList;
+
+                    $.each(Categories, function (i, v) {
+                        $('#productCategory').append('<option value="' + v.Value + '">' + v.Text + '</option>');
+                        //  $ele.append($('<option/>').val(v.CategoryID).text(v.CategoryName));
+
+                    })
+                },
+                error: function (Error) { console.log(Error); alert('err'); }
+            })
+
+        }
+        else {
+            renderCategory(element);
+        }
+    }
+
+    function getProduct(catID) {
+        product = [];
+        $.ajax({
+            type: "GET",
+            url: '/PO/getProducts',
+            data: { CatID: $(catID).val() },
+            success: function (data) {
+                $('#product option').remove();
+                product = data.GenericList;
+                //alert(JSON.stringify(product));
+                
+                $.each(product, function (i, v) {
+                    // $('product').append($('<option/>').val(val.CategoryId).text(val.CategoryName))
+                    $('#product').append('<option value="' + v.Value + '">' + v.Text + '</option>');
+                })
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+
+</script>
+<header id="headerz1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="BGHeader"><span class="glyphicon glyphicon-pawn" aria-hidden="true"></span>Purchase Order</h2>
+            </div>
+        </div>
+    </div>
+
+</header>
+<div class="col-md-12 row" >
+    @using (Html.BeginForm("CreatePO")){
+  
+    <div class="col-md-6"><label for="gender" class="control-label col-md-12">Get by Firm</label></div>
+          <div class="col-md-6"> <select class="form-control" id="firm" onchange = "RedirectById(this.value)" ><option value="">--Select--</option><option value="999">Get All</option></select>
+        </div>
+    }
+           </div><div class="clearfix"></div><br/>
+
+@*start of grid*@
+
+<div class="panel panel-default">
+    <div class="panel-heading text-center">
+        <h3 class="panel-title"><b><u>Orders</u></b></h3>
+        <a class="pull-right" data-toggle="modal" data-target="#createOrder" style="cursor: pointer"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i></a>
+    </div>
+    <div class="panel-body ">
+
+        <table class="table table-responsive  table-hover">
+            <thead>
+                <tr>
+                    <th>Order No.</th>
+                    <th>Order Date</th>
+                      <th>Firm</th>
+                    <th>Vendor Name</th>
+                    <th>Total Items</th>
+                    <th>Grand Total</th>
+                    <th>Created By</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+               @foreach (POGridVM pur in @Model)
+               {
+
+                    <tr>
+                        <td>@Html.ActionLink(@pur.OrderNo, "ViewOrderDetails", new { @OrderID = @pur.OrderID, @Mini = @pur.OrderNo, @Macro = @pur.Amount, @Date = pur.OrderDate })</td>
+                        <td>@pur.OrderDate</td>
+                        <td>@pur.Firm</td>
+                        <td>@pur.Vendor</td>
+                        <td>@pur.TotalItem</td>
+                        <td>@pur.Amount</td>
+                        <td>@pur.CreatedBy</td>
+                        @*<td><a  data-toggle="modal" data-target="#remove" style="cursor:pointer">@Html.ActionLink(".", "Remove", new { @Selected = @pur.PurchaserID }, new {@class="glyphicon glyphicon-trash" }) </a></td>*@
+                         <td>@Html.ActionLink(".", "Purchase_Invoice", new { @OrderNo = @pur.OrderNo }, new { target = "_blank", @class = "glyphicon glyphicon-print" })</td>
+                        
+
+                    </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+@*end of grid*@
+
+
+<script>
+    var delID;
+    $(document).ready(function () {
+
+    })
+
+
+    var save2 = function () {
+        //alert($('#Master-name').val().trim());
+        var isValid = true;
+        if ($('#Master-name').val().trim() == '') {
+            $('#Master-name').siblings('span.error').text('Name is Required').css('visibility', 'visible');
+            isValid = false;
+        }
+        var data = { ProductMasterName: $('#Master-name').val().trim(), IsActive: $('#isactive').is(":checked") }
+
+
+
+        $(this).val('Please Wait');
+        //alert(JSON.stringify(data));
+        $.ajax({
+            type: 'POST',
+            url: 'SaveMaster',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+
+            success: function (d) {
+
+                if (d.Respond) {
+                    $('#addMaster').modal('hide');
+                    var st = 'Record Inserted successfully.';
+                    $('#Response').append('<i class="glyphicon glyphicon-saved"></i><br/><p>' + st + '</p>');
+                    $('#Response').notifyModal({
+                        duration: 3500,
+                        placement: 'center',
+                        onTop: true,
+                    });
+                    $('#Response').text('');
+
+                    setTimeout(Redirect, 3000);
+
+
+
+                    //$('#Quantity,#Rate,#orderNo,#description,#orderdate').val('');
+                }
+                else if (data.Message > 0) {
+                    var st = 'Item master name should be unique.';
+                    $('#Response').append('<i class="glyphicon glyphicon-remove"></i><br/><p>' + st + '</p>');
+                    $('#Response').notifyModal({
+                        duration: 4500,
+                        placement: 'center',
+                        onTop: true,
+                    });
+                    $('#Response').text('');
+                }
+            },
+            error: function (Error) { console.log(Error); $('#submit').text('Save'); }
+        });
+        list = [];
+        $(this).val('Save');
+    }
+
+    var openModal = function (id) {
+        $('#remove').modal('show');
+        delID = id;
+    }
+
+
+    $(document).on("click", "#btnDelete", function () {
+
+        $.ajax({
+            type: "POST",
+            url: '/Product/Delete',
+            data: { ID: delID },
+            success: function (data) {
+                if (data.Respond)
+                    $('#remove').modal('hide');
+                var st = 'Record deleted successfully.';
+                $('#Response').append('<i class="glyphicon glyphicon-saved"></i><br/><p>' + st + '</p>');
+                $('#Response').notifyModal({
+                    duration: 3500,
+                    placement: 'center',
+                    onTop: true,
+                });
+                $('#Response').text('');
+
+                setTimeout(Redirect, 3000);
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    });
+
+
+</script>
+
+<div class="modal fade" id="createOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="exampleModalLabel">Create New order</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <form enctype="multipart/form-data">
+
+
+
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="Master-name" class="control-label">Select Order Type</label>
+                            <select id="DDOrderType" class="OrderType form-control">
+                                <option>Select</option>
+                            </select><span class="error"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Master-name" class="control-label">Select Vendor</label>
+                            <select id="DDPurchaser" class="Purchaser form-control">
+                                <option>Select</option>
+                            </select><span class="error"></span>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <br />
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="Master-name" class="control-label">Description</label>
+                            <textarea id="Description" class="form-control"></textarea><span class="error"></span>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <br />
+                    <!--Start of Detail-->
+                    <div class="detail">
+                        <h2><b><u>Order Item</u></b></h2>
+                        <table class="table table-responsive">
+                            <tr>
+                                <td>Category</td>
+                                <td>Product</td>
+                                 <td>Item Description</td>
+                                <td>Quantity</td>
+                                <td>Rate</td>
+                                <td>&nbsp</td>
+                            </tr>
+                            <tr class="myContainer" id="mainRow">
+                                <td class="col-md-4">
+                                    <select id="productCategory" class="pc form-control" onchange="getProduct(this)">
+                                        <option>Select</option>
+
+                                    </select>
+                                    <span class="error">Select Category</span>
+                                </td>
+
+                                <td class="col-md-4">
+                                    <select id="product" class="product form-control">
+                                        <option>Select</option>
+                                    </select>
+                                    <span class="error">Select Item</span>
+                                </td>
+
+                                <td class="col-md-4">
+                                    <input type="text" id="ItemDescription" class="ItemDescription form-control" /><span class="error">Quantity required</span></td>
+
+                                <td class="col-md-2">
+                                    <input type="text" id="Quantity" class="Quantity form-control" /><span class="error">Quantity required</span></td>
+                                <td class="col-md-2">
+                                    <input type="text" id="Rate" class="Rate form-control" /><span class="error">Rate required</span></td>
+                                <td>
+                                    <input type="button" value="Add" id="add" style="width: 50px" class="btn btn-info" /></td>
+                            </tr>
+                        </table>
+
+                        <div class="OrderItems">
+                            <table class="table table-responsive" id="oderDetailsItem">
+                            </table>
+                            <span id="oderItemsError" style="color: red"></span>
+                        </div>
+                        @*<div style="padding: 10px 0; text-align: right">
+                            <input type="button" id="submit" value="Save Order" class="btn btn-danger" style="padding: 10px 20px" />
+                        </div>*@
+                        <!--End of buttonSubmit -->
+
+
+                    </div>
+
+                    <!--end of Detail-->
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit"  id="submit"class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="remove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @* <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>*@
+                <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <b>Are you sure to want Delete Record?</b>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

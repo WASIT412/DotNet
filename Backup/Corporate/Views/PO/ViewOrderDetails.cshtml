@@ -1,0 +1,86 @@
+﻿@using Corporate.ViewModel;
+@model IEnumerable<ViewOrderDetailVM>
+
+@{
+    ViewBag.Title = "ViewOrderDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header id="headerz1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="BGHeader"><span class="glyphicon glyphicon-pawn" aria-hidden="true"></span> View Order Details</h2>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+@*start of grid*@
+<div class="panel panel-default">
+    <div class="panel-heading text-center">
+        <h3 class="panel-title"><b><u>Order Detail</u></b></h3>
+       
+    </div>
+    <div class="panel-body ">
+
+        <table class="table table-responsive  table-hover">
+            <thead>
+               <tr><th>Order No</th><th>@Request.QueryString["Mini"]</th><th>Order date</th><th>@Request.QueryString["Date"]</th></tr>
+                <tr>
+                    <th>Product</th>
+                    <th>Detail</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Total</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+               @foreach (ViewOrderDetailVM pur in @Model)
+                {
+
+                    <tr>
+                        
+                        <td>@pur.Product</td>
+                         <td>@pur.ItemDescription</td>
+                        <td>@pur.Quantity</td>
+                        <td>@pur.Rate</td>
+                        <td>@pur.Total</td>
+                       
+
+                    </tr>
+                }
+                <tr><td></td><td></td><td>Grand Total</td><td>@Request.QueryString["Macro"]</td></tr>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+@*end of grid*@
+
+
+
+<p>
+   
+    
+    @Html.ActionLink(
+    "Go to PO", //linkText
+    "CreatePO", //actionName
+    "PO", //controllerName
+    null, //routeValues
+     null //htmlAttributes
+)
+<b>|</b>
+
+   
+    
+    @Html.ActionLink(
+    "Go to Ledger", //linkText
+    "Index", //actionName
+    "Accounting", //controllerName
+     null, //routeValues
+     null //htmlAttributes
+)
+</p>

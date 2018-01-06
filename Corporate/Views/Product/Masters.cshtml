@@ -1,0 +1,208 @@
+﻿
+@{
+    ViewBag.Title = "Master Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Corporate.ViewModel;
+@model IEnumerable<ProductMasterVM>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<header id="headerz1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="BGHeader"><span class="glyphicon glyphicon-pawn" aria-hidden="true"></span>Product Master</h2>
+            </div>
+        </div>
+    </div>
+
+</header>
+          <div id="Response" style="display:none">
+                  <p id="ResponseMsg"></p>
+          </div> 
+
+@*start of grid*@
+<div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title"><b><u>Product Master</u></b></h3><a  class="pull-right" data-toggle="modal" data-target="#addMaster" style="cursor:pointer"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i></a>
+            </div>
+            <div class="panel-body ">
+
+                <table class="table table-responsive  table-hover">
+                    <thead><tr><th>Product</th><th>IsActive</th><th>Created By</th><th>Created Date</th><th>Modify By</th><th>Modify Date</th><th></th><th></th></tr></thead>
+                    <tbody>
+                       @foreach (ProductMasterVM pur in @Model)
+                       {
+
+                        <tr>
+                        <td>@Html.ActionLink(@pur.ProductMasterName, "Detail", new { @Selected = @pur.ProductMasterID})</td><td>@pur.IsActive</td><td> @pur.CreatedByName</td><td>@pur.CreatedDate</td><td>@pur.ModifyByName</td><td>@pur.ModifiedDate</td>
+                            @*<td><a  data-toggle="modal" data-target="#remove" style="cursor:pointer">@Html.ActionLink(".", "Remove", new { @Selected = @pur.PurchaserID }, new {@class="glyphicon glyphicon-trash" }) </a></td>*@
+                            <td>@Html.ActionLink(".", "Detail", new { @Selected = @pur.ProductMasterID }, new {@class="glyphicon glyphicon-pencil" })</td>
+                            <td><a  data-toggle="modal"  style="cursor:pointer" onclick="openModal(@pur.ProductMasterID)"><i class="glyphicon glyphicon-trash"></i></a></td>
+                            
+                      </tr>
+                       }
+                    </tbody>
+                </table>
+                </div></div>
+@*end of grid*@
+
+
+<script>
+    var delID;
+    $(document).ready(function () {
+       
+    })
+
+
+    var save = function () {
+        //alert($('#Master-name').val().trim());
+        var isValid = true;
+        if ($('#Master-name').val().trim() == '') {
+            $('#Master-name').siblings('span.error').text('Name is Required').css('visibility', 'visible');
+            isValid = false;
+        }
+        var data = { ProductMasterName: $('#Master-name').val().trim(), IsActive: $('#isactive').is(":checked") }
+                
+          
+     
+            $(this).val('Please Wait');
+            //alert(JSON.stringify(data));
+            $.ajax({
+                type: 'POST',
+                url: 'SaveMaster',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+              
+                success: function (d) {
+
+                    if (d.Respond) {
+                        $('#addMaster').modal('hide');
+                        var st = 'Record Inserted successfully.';
+                        $('#Response').append('<i class="glyphicon glyphicon-saved"></i><br/><p>' + st + '</p>');
+                        $('#Response').notifyModal({
+                            duration: 3500,
+                            placement: 'center',
+                            onTop: true,
+                        });
+                        $('#Response').text('');
+                      
+                        setTimeout(Redirect, 3000);
+                  
+                        
+                      
+                        //$('#Quantity,#Rate,#orderNo,#description,#orderdate').val('');
+                    }
+                    else if (data.Message > 0)
+                    {
+                        var st = 'Item master name should be unique.';
+                        $('#Response').append('<i class="glyphicon glyphicon-remove"></i><br/><p>' + st + '</p>');
+                        $('#Response').notifyModal({
+                            duration: 4500,
+                            placement: 'center',
+                            onTop: true,
+                        });
+                        $('#Response').text('');
+                    }
+                },
+                error: function (Error) { console.log(Error); $('#submit').text('Save'); }
+            });
+            list = [];
+            $(this).val('Save');
+        }
+
+    
+    function Redirect() {
+        window.location.href = ' http://localhost:1795/Product/Masters';
+    }
+
+    var openModal = function (id) {
+        $('#remove').modal('show');
+        delID = id;
+    }
+
+
+    $(document).on("click", "#btnDelete", function () {
+       
+        $.ajax({
+            type: "POST",
+            url: '/Product/Delete',
+            data: { ID: delID },
+            success: function (data) {
+                if (data.Respond)
+                    $('#remove').modal('hide');
+                var st = 'Record deleted successfully.';
+                $('#Response').append('<i class="glyphicon glyphicon-saved"></i><br/><p>' + st + '</p>');
+                $('#Response').notifyModal({
+                    duration: 3500,
+                    placement: 'center',
+                    onTop: true,
+                });
+                $('#Response').text('');
+
+                setTimeout(Redirect, 3000);
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    });
+  
+   
+</script>
+
+ <div class="modal fade" id="addMaster" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+   
+        <h4 class="modal-title" id="exampleModalLabel">Add Master Item</h4>
+      </div>
+      <div class="modal-body">
+    
+
+        <form enctype="multipart/form-data">
+         
+            
+              
+            <div class="clearfix"></div>
+            <div class="form-group"> 
+              <div class="col-md-6">
+            <label for="Master-name" class="control-label">Item Master</label>
+            <input type="text" class="form-control" id="Master-name"><span class="error"></span>
+             </div>
+              <div class="col-md-6">
+               <label for="isactive" class="control-label">IsActive</label>
+            <input type="checkbox" class="checkbox big" id="isactive">
+                  </div>
+          </div><div class="clearfix"></div><br/>        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" onclick="save()" class="btn btn-primary" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="remove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       @* <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>*@
+        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+      </div>
+      <div class="modal-body">
+      <b>Are you sure to want Delete Record?</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
