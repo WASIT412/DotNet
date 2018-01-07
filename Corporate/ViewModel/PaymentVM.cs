@@ -16,6 +16,7 @@ namespace Corporate.ViewModel
         public int TotalRows { get; set; }
         public int PurchaserID { get; set; }
         public int PaymentID { get; set; }
-        public int GitID { get; set; }
+        public int GitID { get; set; } 
+        public int newID { get; set; }
     }
 }
